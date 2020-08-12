@@ -3,10 +3,7 @@ package com.luv2code.springdemo.rest;
 import com.luv2code.springdemo.entity.Customer;
 import com.luv2code.springdemo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class CustomerRestController {
         return customerService.getCustomers();
     }
 
-    // Add mapping for GET /customers//{customerId}
+    // Add mapping for GET /customers/{customerId}
     @GetMapping("/customers/{customerId}")
     public Customer getCustomer(@PathVariable int customerId) {
         // Delegate to the get the Customer Service
@@ -41,6 +38,23 @@ public class CustomerRestController {
             throw new CustomerNotFoundException("Customer ID not found! ID = " + customerId);
         }
 
+        return theCustomer;
+    }
+
+    // Add mapping for POST /customers - add new customer
+    @PostMapping("/customers")
+    public Customer addCustomer(@RequestBody Customer theCustomer) {
+        theCustomer.setId(0);
+        // Uses Hibernate (DAO package) session.SaveOrUpdate -> if PrimaryKey is empty (null or 0) then INSER else UPDATE
+        customerService.saveCustomer(theCustomer);
+        return theCustomer;
+    }
+
+    // Add mapping for PUT /customers - update existing customer
+    @PutMapping("/customers")
+    public Customer updateCustomer(@RequestBody Customer theCustomer) {
+        // Uses Hibernate (DAO package) session.SaveOrUpdate -> if PrimaryKey is empty (null or 0) then INSER else UPDATE
+        customerService.saveCustomer(theCustomer);
         return theCustomer;
     }
 }
