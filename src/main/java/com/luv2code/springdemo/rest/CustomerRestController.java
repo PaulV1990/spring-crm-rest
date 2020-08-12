@@ -18,6 +18,7 @@ public class CustomerRestController {
     private final CustomerService customerService;
 
     @Autowired
+    // When we have a class with multiple constructors, we need to explicitly add the @Autowired annotation to any one of the constructors so that Spring knows which constructor to use to inject the dependencies.
     public CustomerRestController(CustomerService customerService) {
         this.customerService = customerService;
     }
