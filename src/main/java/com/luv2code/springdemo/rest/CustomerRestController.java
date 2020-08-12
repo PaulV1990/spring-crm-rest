@@ -13,9 +13,14 @@ import java.util.List;
 @RequestMapping("/api")
 public class CustomerRestController {
 
-    // Autowire the CustomerService
+    // Autowire the CustomerService with Constructor-based dependency injection
+    // https://blog.marcnuri.com/field-injection-is-not-recommended/
+    private final CustomerService customerService;
+
     @Autowired
-    private CustomerService customerService;
+    public CustomerRestController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     // ADd mapping for GET /customers
     @GetMapping("/customers")
